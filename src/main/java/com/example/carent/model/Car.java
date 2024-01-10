@@ -27,14 +27,16 @@ public class Car {
     @Column(name = "model")
     private String model;
 
-    @Column(name="image")
-    private String images;
+    @ElementCollection
+    @CollectionTable(name = "image_list", joinColumns = @JoinColumn(name = "car_id"))
+    @Column(name = "image_url")
+    private List<String> images;
 
     @Column(name = "year")
     private int year;
 
     @Column(name = "hourly_rate")
-    private double price;
+    private double pricePerHour;
 
     @Column(name = "is_booked")
     private boolean isBooked;

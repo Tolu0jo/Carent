@@ -1,6 +1,8 @@
 package com.example.carent.controller;
 
+import com.example.carent.dto.request.SignInDto;
 import com.example.carent.dto.request.SignUpDto;
+import com.example.carent.dto.response.SignInResponse;
 import com.example.carent.dto.response.SignUpResponse;
 import com.example.carent.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +24,16 @@ public class AuthController {
     public ResponseEntity<SignUpResponse> userSignUp(@RequestBody SignUpDto signUpDto){
         SignUpResponse response = authService.userSignUp(signUpDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+    @PostMapping("/admin/signup")
+    public ResponseEntity<SignUpResponse> adminSignUp(@RequestBody SignUpDto signUpDto){
+        SignUpResponse response = authService.adminSignUp(signUpDto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<SignInResponse> signIn(@RequestBody SignInDto signinDto){
+        SignInResponse response = authService.signIn(signinDto);
+        return ResponseEntity.ok(response);
     }
 }

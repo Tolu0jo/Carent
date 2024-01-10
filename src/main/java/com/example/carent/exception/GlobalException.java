@@ -28,4 +28,24 @@ public class GlobalException {
                 build();
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(value= BadRequestException.class)
+    public final ResponseEntity<ExceptionResponse> handleBadRequestException(BadRequestException exception){
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder().
+                message(exception.getMessage())
+                .status(HttpStatus.BAD_REQUEST)
+                .timeStamp(LocalDateTime.now()).
+                build();
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value= NotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> handleNotFoundException(NotFoundException exception){
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder().
+                message(exception.getMessage())
+                .status(HttpStatus.NOT_FOUND)
+                .timeStamp(LocalDateTime.now()).
+                build();
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
 }

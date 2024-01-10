@@ -1,5 +1,6 @@
 package com.example.carent.dto.response;
 
+import com.example.carent.model.Roles;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,5 +14,7 @@ public class SignInResponse {
     public String token;
 
     public String refreshToken;
+
+    public Roles role;
 
 }
