@@ -25,7 +25,7 @@ public class CarServiceImpl implements CarService {
     private final  CarRepository carRepository;
     @Override
     public Car addCar(CarDto carDto) {
-        log.info("CARDTO {}",carDto);
+
         Car car = Car.builder()
                 .brand(carDto.getBrand())
                 .images(carDto.getImages())
@@ -38,7 +38,14 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> getAllCar() {
+    public List<Car> getAllCar(Optional<String> model,Optional<String> brand) {
+
+        if(model.isPresent() && brand.isPresent())
+            return carRepository.findCarsByBrandAndModel(model.get(),brand.get());
+        if(model.isPresent())
+            return carRepository.findCarsByModel(model.get());
+        if(brand.isPresent())
+            return carRepository.findCarsByBrand(brand.get());
         return carRepository.findAll();
     }
 

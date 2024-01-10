@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/car")
@@ -22,8 +23,8 @@ public class CarController {
     }
 
     @GetMapping
-    public ResponseEntity< List<Car> > getAllCar (){
-       List<Car> cars=carService.getAllCar();
+    public ResponseEntity< List<Car> > getAllCar (@RequestParam Optional<String> model, @RequestParam Optional<String> brand){
+       List<Car> cars=carService.getAllCar(model,brand);
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
 
