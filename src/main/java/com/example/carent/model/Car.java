@@ -27,6 +27,9 @@ public class Car {
     @Column(name = "model")
     private String model;
 
+    @Column(name="image")
+    private String images;
+
     @Column(name = "year")
     private int year;
 
