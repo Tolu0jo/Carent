@@ -27,10 +27,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request->request.requestMatchers("**")
+                .authorizeHttpRequests(request->request.requestMatchers("/api/auth/**","/api/car","/api/car/single_car/**")
                         .permitAll()
-//                        .requestMatchers("/api/products/**","/api/category/**").hasAnyAuthority(Roles.ADMIN.name())
-//                        .requestMatchers("/api/cart/**","/api/wishlist/**","/api/order/create-checkout").hasAnyAuthority(Roles.USER.name())
+                   .requestMatchers("/api/car/edit/**","/api/car/edit/**","/api/car/ad_car").hasAnyAuthority(Roles.ADMIN.name())
+                 //.requestMatchers("/api/car").hasAnyAuthority(Roles.USER.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

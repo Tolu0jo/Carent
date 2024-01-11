@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CarController {
     private  final CarService carService;
-    @PostMapping
+    @PostMapping("/add_car")
     public ResponseEntity<Car> addCar (@RequestBody CarDto carDto){
         Car car=carService.addCar(carDto);
         return new ResponseEntity<>(car, HttpStatus.CREATED);
@@ -28,18 +28,18 @@ public class CarController {
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping("edit/{id}")
     public ResponseEntity<Car> editCar ( @RequestBody  CarDto carDto, @PathVariable String id){
         Car car=carService.editCar(carDto,id);
         return new ResponseEntity<>(car, HttpStatus.CREATED);
     }
-    @GetMapping("{id}")
+    @GetMapping("/single_car/{id}")
     public ResponseEntity<Car> getCar (@PathVariable String id){
         Car car=carService.getCar(id);
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCar (@PathVariable String id){
         carService.deleteCar(id);
         return new ResponseEntity<>("Car " + id  + " deleted Successfully",HttpStatus.GONE);
