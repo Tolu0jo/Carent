@@ -16,5 +16,5 @@ public class PaymentRequest {
     private  String redirect_url;
     private double amount;
     private String url;
-    private Booking meta;
+    private long meta;
 }

@@ -14,7 +14,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -28,10 +27,12 @@ public class FlutterServiceImpl implements FlutterService {
     @Value("${flutter.payment.url}")
     private String paymentUrl;
 
-
+    @Value("{flw.redirect.url")
+    private String redirectUrl;
 
     @Override
     public Object createPayment(PaymentRequest paymentRequest) throws JsonProcessingException {
+        paymentRequest.setRedirect_url(redirectUrl);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = objectMapper.writeValueAsString(paymentRequest);
         HttpEntity<String> httpEntity = new HttpEntity<>(jsonString, restTemplateUtils.getHeaders());

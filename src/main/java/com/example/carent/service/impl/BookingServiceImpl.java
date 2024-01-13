@@ -3,6 +3,7 @@ package com.example.carent.service.impl;
 import com.example.carent.dto.request.BookingRequestDto;
 import com.example.carent.dto.request.PaymentRequest;
 
+import com.example.carent.exception.BadRequestException;
 import com.example.carent.exception.NotFoundException;
 import com.example.carent.model.Booking;
 import com.example.carent.model.Car;
@@ -39,7 +40,8 @@ public class BookingServiceImpl implements BookingService {
         User user = SecurityUtils.getCurrentUserDetails();
         Optional<Car>  car = carRepository.findById(Long.valueOf(id));
         if (car.isEmpty()) throw  new NotFoundException("Car with " +id + " not found.");
-        double amount = car.get().getPricePerHour()*bookingRequestDto.getBookingHours();
+        if(car.get().isBooked()) throw new BadRequestException("Car with " +id + " is booked.");
+        double amount = car.get().getPricePerHour()* bookingRequestDto.getBookingHours();
         Booking booking = Booking.builder()
                 .bookingHours(bookingRequestDto.getBookingHours())
                 .amount(amount)
@@ -49,10 +51,12 @@ public class BookingServiceImpl implements BookingService {
                 .estimatedEndTime(LocalDateTime.now().plusHours(bookingRequestDto.getBookingHours()))
                 .endTime(null)
                 .build();
+        car.get().setBooked(true);
+        carRepository.save(car.get());
         Booking newBooking =bookingRepository.save(booking);
         PaymentRequest paymentRequest = PaymentRequest.builder()
                 .amount(amount)
-                .meta(newBooking)
+                .meta(newBooking.getId())
                 .tx_ref(TransactionReferenceGenerator.generateReference()).
                 build();
 
@@ -60,7 +64,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public void endBooking(String id) throws JsonProcessingException {
+    public Object endBooking(String id) throws JsonProcessingException {
           Booking booking = bookingRepository.findById(Long.valueOf(id)).get();
           LocalDateTime startTime = booking.getStartTime();
           LocalDateTime endTime = LocalDateTime.now();
@@ -71,17 +75,17 @@ public class BookingServiceImpl implements BookingService {
             booking.setEndTime(endTime);
             booking.getCar().setBooked(false);
             bookingRepository.save(booking);
+            return "Booking ended Successfully";
         }
         booking.setEndTime(endTime);
         booking.getCar().setBooked(false);
         bookingRepository.save(booking);
         PaymentRequest paymentRequest = PaymentRequest.builder()
                 .amount(hoursDifference * booking.getCar().getPricePerHour())
-                .meta(booking)
+                .meta(booking.getId())
                 .tx_ref(TransactionReferenceGenerator.generateReference()).
                 build();
 
-         flutterService.createPayment(paymentRequest);
-
+      return flutterService.createPayment(paymentRequest);
     }
 }

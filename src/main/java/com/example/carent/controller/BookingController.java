@@ -20,8 +20,8 @@ public class BookingController {
     }
 
     @GetMapping("{id}")
-    public String endBooking(@PathVariable String id) throws JsonProcessingException {
-        bookingService.endBooking(id);
-        return "Booking ended, thanks for your patronage";
+    public ResponseEntity<?>  endBooking(@PathVariable String id) throws JsonProcessingException {
+        Object object = bookingService.endBooking(id);
+        return ResponseEntity.ok(object);
     }
 }

@@ -7,5 +7,5 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 public interface BookingService {
 
 Object createBooking (String id, BookingRequestDto bookingRequestDto) throws JsonProcessingException;
-void endBooking(String id) throws JsonProcessingException;
+Object endBooking(String id) throws JsonProcessingException;
 }
