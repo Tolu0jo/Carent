@@ -5,6 +5,7 @@ import com.example.carent.security.JwtAuthenticationFilter;
 import com.example.carent.service.impl.UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @RequiredArgsConstructor
@@ -29,8 +31,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request->request.requestMatchers("/api/auth/**","/api/car","/api/car/single_car/**")
                         .permitAll()
-                   .requestMatchers("/api/car/edit/**","/api/car/edit/**","/api/car/ad_car").hasAnyAuthority(Roles.ADMIN.name())
-                 //.requestMatchers("/api/car").hasAnyAuthority(Roles.USER.name())
+                   .requestMatchers("/api/car/edit/**","/api/car/add_car","/api/car/delete/**").hasAnyAuthority(Roles.ADMIN.name())
+                   .requestMatchers("/api/car","/api/booking/**").hasAnyAuthority(Roles.USER.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
@@ -56,5 +58,9 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();
+    }
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        return builder.build();
     }
 }

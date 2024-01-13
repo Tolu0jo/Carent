@@ -1,10 +1,15 @@
 package com.example.carent.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity(name = "bookings")
+@AllArgsConstructor
+@RequiredArgsConstructor
+@Data
+@Builder
 public class Booking {
 
     @Id
@@ -26,6 +31,9 @@ public class Booking {
     private double amount;
     @Column(name = "start_time")
     private LocalDateTime startTime;
+
+    @Column(name = "estimated_end_time")
+    private LocalDateTime estimatedEndTime;
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
