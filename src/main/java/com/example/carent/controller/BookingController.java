@@ -34,15 +34,21 @@ public class BookingController {
         return ResponseEntity.ok(bookings);
     }
 
-    @GetMapping("history")
+    @GetMapping("my_booking_history")
     public ResponseEntity<List<Booking>> bookingHistory(){
         List<Booking> bookings = bookingService.inactiveBookings();
         return ResponseEntity.ok(bookings);
     }
 
-    @GetMapping("/allBookings")
-    public ResponseEntity<List<Booking>> allBookings(){
+    @GetMapping("/all_my_bookings")
+    public ResponseEntity<List<Booking>> allMyBookings(){
         List<Booking> bookings = bookingService.getMyBookings();
+        return ResponseEntity.ok(bookings);
+    }
+
+    @GetMapping("/all_active_bookings")
+    public ResponseEntity<List<Booking>> allActiveBookings(){
+        List<Booking> bookings = bookingService.allActiveBookings();
         return ResponseEntity.ok(bookings);
     }
 }

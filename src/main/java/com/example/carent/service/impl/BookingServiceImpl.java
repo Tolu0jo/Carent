@@ -109,4 +109,10 @@ public class BookingServiceImpl implements BookingService {
         List<Booking> bookings=bookingRepository.findBookingsByUser(user);
         return bookings.stream().filter(booking -> (!booking.getCar().isBooked())).toList();
     }
+
+    @Override
+    public List<Booking> allActiveBookings() {
+        List<Booking> bookings = bookingRepository.findAll();
+        return bookings.stream().filter(booking -> (booking.getCar().isBooked())).toList();
+    }
 }

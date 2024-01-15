@@ -14,7 +14,8 @@ Object endBooking(String id) throws JsonProcessingException;
 
 List<Booking> getMyBookings();
 List<Booking> activeBookings();
-
 List<Booking> inactiveBookings();
+
+List<Booking> allActiveBookings();
 
 }
