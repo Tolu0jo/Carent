@@ -45,4 +45,14 @@ public class CarController {
         return new ResponseEntity<>("Car " + id  + " deleted Successfully",HttpStatus.GONE);
     }
 
+    @GetMapping("/booked_cars")
+    public ResponseEntity<List<Car>> getBookedCar(){
+       List<Car> cars = carService.getBookedCars();
+        return ResponseEntity.ok(cars);
+    }
+    @GetMapping("/unbooked_cars")
+    public ResponseEntity<List<Car>> getUnbookedCar(){
+        List<Car> cars = carService.getUnbookedCars();
+        return ResponseEntity.ok(cars);
+    }
 }

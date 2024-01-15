@@ -17,4 +17,8 @@ public interface CarService {
     void deleteCar(String id);
 
     Car editCar(CarDto carDto, String id);
+
+    List<Car>getBookedCars();
+
+    List<Car> getUnbookedCars();
 }

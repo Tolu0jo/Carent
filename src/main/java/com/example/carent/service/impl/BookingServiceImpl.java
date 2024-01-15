@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -87,5 +88,25 @@ public class BookingServiceImpl implements BookingService {
                 build();
 
       return flutterService.createPayment(paymentRequest);
+    }
+
+    @Override
+    public List<Booking> getMyBookings() {
+        User user= SecurityUtils.getCurrentUserDetails();
+        return bookingRepository.findBookingsByUser(user);
+    }
+
+    @Override
+    public List<Booking> activeBookings(){
+        User user= SecurityUtils.getCurrentUserDetails();
+       List<Booking> bookings=bookingRepository.findBookingsByUser(user);
+      return bookings.stream().filter(booking -> (booking.getCar().isBooked())).toList();
+    }
+
+    @Override
+    public List<Booking> inactiveBookings() {
+        User user= SecurityUtils.getCurrentUserDetails();
+        List<Booking> bookings=bookingRepository.findBookingsByUser(user);
+        return bookings.stream().filter(booking -> (!booking.getCar().isBooked())).toList();
     }
 }

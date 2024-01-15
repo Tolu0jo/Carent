@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request->request.requestMatchers("/api/auth/**","/api/car","/api/car/single_car/**")
                         .permitAll()
                    .requestMatchers("/api/car/edit/**","/api/car/add_car","/api/car/delete/**").hasAnyAuthority(Roles.ADMIN.name())
-                   .requestMatchers("/api/car","/api/booking/**").hasAnyAuthority(Roles.USER.name())
+                   .requestMatchers("/api/car","/api/car/booked_cars","/api/car/unbooked_cars","/api/booking/**").hasAnyAuthority(Roles.USER.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

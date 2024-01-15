@@ -71,6 +71,16 @@ public class CarServiceImpl implements CarService {
         return carRepository.save(existingCar.get());
     }
 
+    @Override
+    public List<Car> getBookedCars() {
+        return carRepository.findCarByBooked(true);
+    }
+
+    @Override
+    public List<Car> getUnbookedCars() {
+        return carRepository.findCarByBooked(false);
+    }
+
     private String[] getNullPropertyNames(Object source) {
         final BeanWrapper src = new BeanWrapperImpl(source);
         java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
