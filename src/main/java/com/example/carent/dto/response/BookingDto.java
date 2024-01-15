@@ -1,20 +1,17 @@
 package com.example.carent.dto.response;
 
-import com.example.carent.model.Car;
-import com.example.carent.model.User;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Data
-@Setter
+@Builder
 public class BookingDto {
-
-    private User user;
-
-    private Car car;
-
+   private Long id;
+    private Long userId;
+    private Long carId;
+    private boolean active;
     private int bookingHours;
 
     private double amount;
@@ -22,8 +19,6 @@ public class BookingDto {
     private LocalDateTime startTime;
 
     private LocalDateTime estimatedEndTime;
+    private LocalDateTime endTime;
 
-    private String paymentLink;
-
-    private String TransactionId;
 }

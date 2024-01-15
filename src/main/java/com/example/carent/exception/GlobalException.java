@@ -1,15 +1,19 @@
 package com.example.carent.exception;
 
 import com.example.carent.dto.response.ExceptionResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
-public class GlobalException {
+@Slf4j
+public class GlobalException extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value= PasswordMismatchException.class)
     public final ResponseEntity<ExceptionResponse> handleUserException(PasswordMismatchException exception){
           ExceptionResponse exceptionResponse = ExceptionResponse.builder().
@@ -48,4 +52,11 @@ public class GlobalException {
                 build();
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<Object> handleException(Exception ex, WebRequest request) {
+//      log.info  ("An error occurred: {}", ex.getMessage());
+//
+//        // Send an appropriate error response to the client
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+//    }
 }

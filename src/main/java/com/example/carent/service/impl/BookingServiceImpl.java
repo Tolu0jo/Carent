@@ -3,6 +3,7 @@ package com.example.carent.service.impl;
 import com.example.carent.dto.request.BookingRequestDto;
 import com.example.carent.dto.request.PaymentRequest;
 
+import com.example.carent.dto.response.BookingDto;
 import com.example.carent.exception.BadRequestException;
 import com.example.carent.exception.NotFoundException;
 import com.example.carent.model.Booking;
@@ -16,8 +17,6 @@ import com.example.carent.service.FlutterService;
 import com.example.carent.utils.SecurityUtils;
 import com.example.carent.utils.TransactionReferenceGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -91,28 +90,69 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getMyBookings() {
+    public List<BookingDto> getMyBookings() {
         User user= SecurityUtils.getCurrentUserDetails();
-        return bookingRepository.findBookingsByUser(user);
+        List<Booking> bookings =bookingRepository.findBookingsByUser(user);
+      return  bookings.stream().map(booking -> BookingDto.builder()
+              .id(booking.getId())
+              .carId(booking.getCar().getId())
+                .amount(booking.getAmount())
+                .active(booking.getCar().isBooked())
+                .bookingHours(booking.getBookingHours())
+                .startTime(booking.getStartTime())
+                .estimatedEndTime(booking.getEstimatedEndTime())
+                .endTime(booking.getEndTime())
+                .build()).toList();
     }
 
     @Override
-    public List<Booking> activeBookings(){
+    public List<BookingDto> activeBookings(){
         User user= SecurityUtils.getCurrentUserDetails();
-       List<Booking> bookings=bookingRepository.findBookingsByUser(user);
-      return bookings.stream().filter(booking -> (booking.getCar().isBooked())).toList();
+       List<Booking> bookingList=bookingRepository.findBookingsByUser(user);
+      List<Booking> bookings =bookingList.stream().filter(booking -> (booking.getCar().isBooked())).toList();
+        return  bookings.stream().map(booking -> BookingDto.builder()
+                .id(booking.getId())
+                .carId(booking.getCar().getId())
+                .active(booking.getCar().isBooked())
+                .amount(booking.getAmount())
+                .bookingHours(booking.getBookingHours())
+                .startTime(booking.getStartTime())
+                .estimatedEndTime(booking.getEstimatedEndTime())
+                .endTime(booking.getEndTime())
+                .build()).toList();
     }
 
     @Override
-    public List<Booking> inactiveBookings() {
+    public List<BookingDto> inactiveBookings() {
         User user= SecurityUtils.getCurrentUserDetails();
-        List<Booking> bookings=bookingRepository.findBookingsByUser(user);
-        return bookings.stream().filter(booking -> (!booking.getCar().isBooked())).toList();
+        List<Booking> bookingList=bookingRepository.findBookingsByUser(user);
+        List<Booking> bookings= bookingList.stream().filter(booking -> (!booking.getCar().isBooked())).toList();
+        return  bookings.stream().map(booking -> BookingDto.builder()
+                .id(booking.getId())
+                .carId(booking.getCar().getId())
+                .amount(booking.getAmount())
+                .bookingHours(booking.getBookingHours())
+                .active(booking.getCar().isBooked())
+                .startTime(booking.getStartTime())
+                .estimatedEndTime(booking.getEstimatedEndTime())
+                .endTime(booking.getEndTime())
+                .build()).toList();
     }
 
     @Override
-    public List<Booking> allActiveBookings() {
+    public List<BookingDto> allActiveBookings() {
         List<Booking> bookings = bookingRepository.findAll();
-        return bookings.stream().filter(booking -> (booking.getCar().isBooked())).toList();
+        List<Booking> bookingList=  bookings.stream().filter(booking -> (booking.getCar().isBooked())).toList();
+        return bookingList.stream().map(booking -> BookingDto.builder()
+                .id(booking.getId())
+                .carId(booking.getCar().getId())
+                .active(booking.getCar().isBooked())
+                .userId(booking.getUser().getId())
+                .amount(booking.getAmount())
+                .bookingHours(booking.getBookingHours())
+                .startTime(booking.getStartTime())
+                .estimatedEndTime(booking.getEstimatedEndTime())
+                .endTime(booking.getEndTime())
+                .build()).toList();
     }
 }

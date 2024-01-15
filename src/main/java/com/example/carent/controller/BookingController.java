@@ -1,7 +1,7 @@
 package com.example.carent.controller;
 
 import com.example.carent.dto.request.BookingRequestDto;
-import com.example.carent.model.Booking;
+import com.example.carent.dto.response.BookingDto;
 import com.example.carent.service.BookingService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -29,26 +29,26 @@ public class BookingController {
     }
 
     @GetMapping("active_bookings")
-    public ResponseEntity<List<Booking>> getActiveBooking(){
-        List<Booking> bookings = bookingService.activeBookings();
+    public ResponseEntity<List<BookingDto>> getActiveBooking(){
+        List<BookingDto> bookings = bookingService.activeBookings();
         return ResponseEntity.ok(bookings);
     }
 
-    @GetMapping("my_booking_history")
-    public ResponseEntity<List<Booking>> bookingHistory(){
-        List<Booking> bookings = bookingService.inactiveBookings();
+    @GetMapping("/history")
+    public ResponseEntity<List<BookingDto>> bookingHistory(){
+        List<BookingDto> bookings = bookingService.inactiveBookings();
         return ResponseEntity.ok(bookings);
     }
 
-    @GetMapping("/all_my_bookings")
-    public ResponseEntity<List<Booking>> allMyBookings(){
-        List<Booking> bookings = bookingService.getMyBookings();
+    @GetMapping("/bookings")
+    public ResponseEntity<List<BookingDto>> allMyBookings(){
+        List<BookingDto> bookings = bookingService.getMyBookings();
         return ResponseEntity.ok(bookings);
     }
 
     @GetMapping("/all_active_bookings")
-    public ResponseEntity<List<Booking>> allActiveBookings(){
-        List<Booking> bookings = bookingService.allActiveBookings();
+    public ResponseEntity< List<BookingDto> > allActiveBookings(){
+        List<BookingDto> bookings = bookingService.allActiveBookings();
         return ResponseEntity.ok(bookings);
     }
 }

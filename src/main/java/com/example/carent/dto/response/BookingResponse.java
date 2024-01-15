@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatusCode;
 @Data
 @Builder
 public class BookingResponse {
-
     private HttpStatusCode statusCode;
     private String message;
 }

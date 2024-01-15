@@ -31,7 +31,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request->request.requestMatchers("/api/auth/**","/api/car","/api/car/single_car/**","/api/car/booked_cars","/api/car/unbooked_cars")
                         .permitAll()
-                   .requestMatchers("/api/car/edit/**","/api/car/add_car","/api/car/delete/**","/api/bookings/all_active_bookings").hasAnyAuthority(Roles.ADMIN.name())
+                   .requestMatchers("/api/car/edit/**","/api/car/add_car","/api/car/delete/**","/api/booking/all_active_bookings").hasAnyAuthority(Roles.ADMIN.name())
                    .requestMatchers("/api/car","/api/booking/**").hasAnyAuthority(Roles.USER.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

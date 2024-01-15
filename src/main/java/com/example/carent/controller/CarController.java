@@ -31,7 +31,7 @@ public class CarController {
     @PatchMapping("edit/{id}")
     public ResponseEntity<Car> editCar ( @RequestBody  CarDto carDto, @PathVariable String id){
         Car car=carService.editCar(carDto,id);
-        return new ResponseEntity<>(car, HttpStatus.CREATED);
+        return ResponseEntity.ok(car);
     }
     @GetMapping("/single_car/{id}")
     public ResponseEntity<Car> getCar (@PathVariable String id){

@@ -73,12 +73,15 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Car> getBookedCars() {
-        return carRepository.findCarByBooked(true);
+
+        List<Car> cars = carRepository.findAll();
+        return cars.stream().filter(Car::isBooked).toList();
     }
 
     @Override
     public List<Car> getUnbookedCars() {
-        return carRepository.findCarByBooked(false);
+        List<Car> cars = carRepository.findAll();
+        return cars.stream().filter(car -> !car.isBooked()).toList();
     }
 
     private String[] getNullPropertyNames(Object source) {
